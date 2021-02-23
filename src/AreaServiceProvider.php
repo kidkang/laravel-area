@@ -4,12 +4,13 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:09:47
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 20:35:17
+ * @Last Modified time: 2021-02-23 20:43:53
  */
 namespace Yjtec\Area;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 class AreaServiceProvider extends ServiceProvider
 {
 
@@ -26,6 +27,11 @@ class AreaServiceProvider extends ServiceProvider
         $this->commands([
             Commands\Seeder::class
         ]);
+
+
+        Validator::extend('area', function ($attribute, $value, $parameters, $validator) {
+            return app('area')->check($value) ? true : false;
+        });
     } 
 
     public function register(){
