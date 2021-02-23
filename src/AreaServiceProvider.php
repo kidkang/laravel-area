@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:09:47
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:59:04
+ * @Last Modified time: 2021-02-23 20:35:17
  */
 namespace Yjtec\Area;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +33,10 @@ class AreaServiceProvider extends ServiceProvider
             __DIR__.'/../config/area.php',
             'area'
         );
+
+        $this->app->singleton('area',function($app){
+            return new Area($app['cache']);
+        });
     }
     protected function getMigrationFileName(Filesystem $filesystem, $migrationFileName): string
     {
