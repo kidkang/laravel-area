@@ -4,19 +4,25 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:09:47
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 16:37:38
+ * @Last Modified time: 2021-02-23 17:59:04
  */
 namespace Yjtec\Area;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 class AreaServiceProvider extends ServiceProvider
 {
 
-    public function boot(){
-
+    public function boot(Filesystem $filesystem){
+        //config
         $this->publishes([
             __DIR__.'/../config/area.php' => config_path('area.php'),
         ],'config');
-
+        //migration
+        $this->publishes([
+                __DIR__.'/../database/migrations/create_area_tables.php.stub' => $this->getMigrationFileName($filesystem, 'create_area_tables.php'),
+            ], 'migrations');
+        
         $this->commands([
             Commands\Seeder::class
         ]);
@@ -27,5 +33,19 @@ class AreaServiceProvider extends ServiceProvider
             __DIR__.'/../config/area.php',
             'area'
         );
+    }
+    protected function getMigrationFileName(Filesystem $filesystem, $migrationFileName): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem) {
+                return $filesystem->glob($path.'*_create_area_tables.php');
+            })->push($this->app->databasePath()."/migrations/{$timestamp}_create_area_tables.php")
+            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
+                return $filesystem->glob($path.'*_'.$migrationFileName);
+            })
+            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->first();
     }
 }
