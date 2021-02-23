@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:59:18
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:00:01
+ * @Last Modified time: 2021-02-23 17:24:26
  */
 namespace Yjtec\Area\Test;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -42,24 +42,24 @@ abstract class TestCase extends Orchestra{
         ]);
         
         //mysql
-        /*
-        $app['config']->set('database.default','mysql');
-        $app['config']->set('database.connections.mysql', [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'port' => '3306',
-            'database' => 'area',
-            'username' => 'root',
-            'password' => 'root',
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-        ]);
-        */
+        
+        // $app['config']->set('database.default','mysql');
+        // $app['config']->set('database.connections.mysql', [
+        //     'driver' => 'mysql',
+        //     'host' => '127.0.0.1',
+        //     'port' => '3306',
+        //     'database' => 'area',
+        //     'username' => 'root',
+        //     'password' => 'root',
+        //     'unix_socket' => env('DB_SOCKET', ''),
+        //     'charset' => 'utf8mb4',
+        //     'collation' => 'utf8mb4_unicode_ci',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'strict' => true,
+        //     'engine' => null,
+        // ]);
+        
     }
 
     protected function setUpDatabases($app){

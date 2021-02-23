@@ -2,14 +2,14 @@
 
 /**
  * @Author: kidkang
- * @Date:   2021-02-23 16:54:09
+ * @Date:   2021-02-23 16:00:48
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:29:23
+ * @Last Modified time: 2021-02-23 17:29:04
  */
 namespace Yjtec\Area\Test;
-use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-class MigrationTest extends TestCase{
+use DB;
+class DemoTest extends TestCase{
     use RefreshDatabase;
 
     public function testExample(){

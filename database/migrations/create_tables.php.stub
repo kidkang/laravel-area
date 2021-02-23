@@ -13,18 +13,20 @@ class CreateAreaTables extends Migration
      */
     public function up()
     {
-        $tableName = config('area.table_name');
-
-        Schema::create($tableName,function(Blueprint $table){
-            $table->increments('id');
-            $table->string('name');
-            NestedSet::columns($table);
-        });
+        $tableNames = config('area.table_names');
+        if(!Schema::hasTable($tableNames['area'])){
+            Schema::create($tableNames['area'],function(Blueprint $table){
+                $table->increments('id');
+                $table->string('name');
+                NestedSet::columns($table);
+                $table->timestamps();
+            });
+        }
         
     }
 
     public function down(){
-        $tableName = config('area.table_name');
-        Schema::drop($tableName);
+        $tableNames = config('area.table_name');
+        Schema::drop($tableNames['area']);
     }
 }

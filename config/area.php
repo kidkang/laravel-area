@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:20:51
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 15:22:26
+ * @Last Modified time: 2021-02-23 17:17:00
  */
 return [
     /**
@@ -14,5 +14,7 @@ return [
     /**
      * the table name
      */
-    'table_name' => 'area'
+    'table_names' => [
+        'area' => 'area' 
+    ]
 ];
