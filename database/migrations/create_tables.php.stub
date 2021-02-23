@@ -16,10 +16,11 @@ class CreateAreaTables extends Migration
         $tableNames = config('area.table_names');
         if(!Schema::hasTable($tableNames['area'])){
             Schema::create($tableNames['area'],function(Blueprint $table){
-                $table->increments('id');
-                $table->string('name');
+                $table->increments('id')->comment('ID');
+                $table->string('name')->comment('地区名称');
                 NestedSet::columns($table);
                 $table->timestamps();
+                $table->comment = '地区主表';
             });
         }
         

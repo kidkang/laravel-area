@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 16:54:09
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:29:23
+ * @Last Modified time: 2021-02-23 17:44:48
  */
 namespace Yjtec\Area\Test;
 use DB;
@@ -15,10 +15,13 @@ class MigrationTest extends TestCase{
     public function testExample(){
         // $this->assertTrue(true);
         $table = config('area.table_names.area');
+        
         $this->assertDatabaseCount($table,0);
+
         DB::table('area')->insert([
             'name' => 'kidang',
         ]);
+
         $this->assertDatabaseCount($table,1);
     }
 }
