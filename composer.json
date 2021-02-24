@@ -30,7 +30,10 @@
         "laravel": {
             "providers": [
                 "Yjtec\\Area\\AreaServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Area": "Yjtec\\Area\\Facades\\Area"
+            }
         }
     }
 }
