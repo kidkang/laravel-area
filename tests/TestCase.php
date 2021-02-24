@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:59:18
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:24:26
+ * @Last Modified time: 2021-02-24 10:32:16
  */
 namespace Yjtec\Area\Test;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -63,7 +63,7 @@ abstract class TestCase extends Orchestra{
     }
 
     protected function setUpDatabases($app){
-        include_once __DIR__.'/../database/migrations/create_tables.php.stub';
+        include_once __DIR__.'/../database/migrations/create_area_tables.php.stub';
         (new \CreateAreaTables())->up();
     }
 }

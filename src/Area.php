@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:22:41
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 20:33:08
+ * @Last Modified time: 2021-02-24 11:30:27
  */
 namespace Yjtec\Area;
 use Yjtec\Area\Models\Area as AreaModel;
@@ -32,21 +32,27 @@ class Area{
     /**
      * Get the nested or flat area
      * @param  boolean $tree
+     * @param int $parent
      * @return array
      */
-    public function all($tree = true){
-
-        $key = 'AREA:ALL' . ($tree ? ':TREE' : '');
+    public function all($tree = true,$parent = null){
+        $parent = $parent ? $parent : config('area.default_parent_id',null);
+        
+        $key = 'AREA:ALL' 
+            . ($tree ? ':TREE' : '')
+            . ($parent ? ':'.$parent : '');
 
         if($this->cache->has($key)){
             $data = $this->cache->get($key);
             return $data ?? null;
         }
 
+        $data = $this->getDatabaseData($parent);
 
-        $data = AreaModel::get();
         if($tree){
-            $data = $data->toTree();
+
+            $data = $this->getTreeData($data);
+
         }else{
             $data = $data->toFlatTree();
         }
@@ -56,6 +62,21 @@ class Area{
         $this->cache->forever($key,$data);
 
         return $data;
+    }
+
+    protected function getTreeData($data){
+        $data = $data->toTree();
+
+        return $data;
+    }
+
+    protected function getDatabaseData($parent = null){
+        $data = AreaModel::withDepth();
+        if($parent){
+            return $data->descendantsOf($parent);
+        }else{
+            return $data->get();
+        }
     }
     /**
      * detemine the given values in area

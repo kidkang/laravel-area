@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 15:20:51
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:17:00
+ * @Last Modified time: 2021-02-24 10:43:52
  */
 return [
     /**
@@ -16,5 +16,6 @@ return [
      */
     'table_names' => [
         'area' => 'area' 
-    ]
+    ],
+    'default_parent_id' => 1
 ];

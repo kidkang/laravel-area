@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:23:32
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 20:30:05
+ * @Last Modified time: 2021-02-24 11:30:20
  */
 namespace Yjtec\Area\Test;
 use Yjtec\Area\Area;
@@ -14,60 +14,85 @@ class AreaTest extends TestCase{
     public function setUp():void{
         parent::setUp();
         AreaModel::create([
-            'name' => 'kidkang',
+            'name' => '中国',
             'children' => [
-                ['name' => 'yjtec']
+                [
+                    'name' => '河南',
+                    'children' =>[
+                        ['name' => '郑州',
+                            'children' => [
+                                ['name' => '二七区']
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'name' => '辽宁',
+                    'children' =>[
+                        ['name' => '沈阳',
+                                'children' => [
+                                ['name' => '和平区']
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]);
     }
     public function testAll(){
         $area = $this->getArea();
         $data  = $area->all();
-        $this->assertEquals('kidkang',$data[0]['name']);
+        $this->assertEquals('河南',$data[0]['name']);
+    }
+
+    public function testAllWithParent(){
+        $area = $this->getArea();
+        $data = $area->all(true,1);
+        $this->assertEquals('河南',$data[0]['name']);
     }
 
     public function testAllFlat(){
         $area = $this->getArea();
         $data = $area->all(false);
-        $this->assertCount(2,$data);
+        $this->assertCount(6,$data);
     }
 
     public function testCheckWithString(){
         $area = $this->getArea();
-        $this->assertNotFalse($area->check('1'));
+        $this->assertNotFalse($area->check('2'));
         $this->assertFalse($area->check('not exists'));
-        $this->assertNotFalse($area->check('1,2'));
-        $this->assertFalse($area->check('1,not exists'));
+        $this->assertNotFalse($area->check('2,3'));
+        $this->assertFalse($area->check('2,not exists'));
     }
 
     public function testCheckWithArray(){
         $area = $this->getArea();
-        $this->assertNotFalse($area->check([1]));
-        $this->assertNotFalse($area->check(['1']));
+        $this->assertNotFalse($area->check([2]));
+        $this->assertNotFalse($area->check(['2']));
         $this->assertFalse($area->check(['not exists']));
-        $this->assertNotFalse($area->check([1,2]));
-        $this->assertFalse($area->check([1,10]));
+        $this->assertNotFalse($area->check([2,3]));
+        $this->assertFalse($area->check([2,10000]));
     }
 
     public function testCheckTimes(){
         $area = $this->getArea();
-        $this->assertNotFalse($area->check(['1']));
-        $this->assertArrayHasKey('1',$area->checked());
+        $this->assertNotFalse($area->check(['2']));
+        $this->assertArrayHasKey('2',$area->checked());
     }
     public function testChecked(){
         $area = $this->getArea();
-        $area->check(1);
-        $this->assertCount(1,$area->checked(1));
+        $area->check(2);
+        $this->assertCount(1,$area->checked(2));
         
-        $key = '1,2';
+        $key = '2,3';
         $area->check($key);
         $this->assertCount(2,$area->checked($key));
 
-        $key =[1,2];
+        $key =[2,3];
         $area->check($key);
         $this->assertCount(2,$area->checked($key));
 
-        $key = [1,3];
+        $key = [3,100];
         $area->check($key);
         $this->assertFalse($area->checked($key));
     }
