@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:22:41
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-25 13:59:51
+ * @Last Modified time: 2021-02-25 14:57:42
  */
 namespace Yjtec\Area;
 use Yjtec\Area\Models\Area as AreaModel;
@@ -168,10 +168,12 @@ class Area{
             }
         };
         $travel($all);
-        $re = array_reverse($re);
+        $value = array_reverse($re);
         $key = collect($re)->pluck('id')->implode(',');
         return [
-            $key => $re
+            $key,
+            $value,
+            $key => $value
         ];
     }
 
