@@ -4,12 +4,11 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:22:41
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-24 11:30:27
+ * @Last Modified time: 2021-02-25 11:26:37
  */
 namespace Yjtec\Area;
 use Yjtec\Area\Models\Area as AreaModel;
 use Illuminate\Support\Arr;
-use Illuminate\Cache\CacheManager;
 class Area{
 
     /**
@@ -24,11 +23,24 @@ class Area{
     protected $checkedData = [];
     /**
      * set up
-     * @param \Illuminate\Cache\CacheManager $cache
+     * @param  $cache
      */
-    public function __construct(CacheManager $cache){
+    public function __construct($cache){
         $this->cache = $cache;
     }
+
+    /**
+     * Set cache driver
+     * @param [type] $cache [description]
+     */
+    public function setCache($cache){
+        $this->cache = $cache;
+    }
+
+    public function getCache(){
+        return $this->cache;
+    }
+
     /**
      * Get the nested or flat area
      * @param  boolean $tree
@@ -41,7 +53,6 @@ class Area{
         $key = 'AREA:ALL' 
             . ($tree ? ':TREE' : '')
             . ($parent ? ':'.$parent : '');
-
         if($this->cache->has($key)){
             $data = $this->cache->get($key);
             return $data ?? null;

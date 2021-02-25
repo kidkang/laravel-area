@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:23:32
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-24 11:30:20
+ * @Last Modified time: 2021-02-25 11:29:25
  */
 namespace Yjtec\Area\Test;
 use Yjtec\Area\Area;
@@ -13,6 +13,11 @@ class AreaTest extends TestCase{
 
     public function setUp():void{
         parent::setUp();
+        $cache = $this->app['cache']->store('file');
+
+        $cache->forget('AREA:ALL:TREE:1');
+        $cache->forget('AREA:ALL:1');
+
         AreaModel::create([
             'name' => '中国',
             'children' => [
@@ -95,6 +100,26 @@ class AreaTest extends TestCase{
         $key = [3,100];
         $area->check($key);
         $this->assertFalse($area->checked($key));
+    }
+
+    public function testSetCache(){
+        $area = $this->getArea();
+        $cache = $this->app['cache']->store('file');
+        $area->setCache($cache);
+        $this->assertEquals($cache,$area->getCache());
+
+        $area->all();
+        $this->assertTrue($cache->has('AREA:ALL:TREE:1'));
+        $area->all(false);
+        $this->assertTrue($cache->has('AREA:ALL:1'));
+    }
+    public function testAreaEnvTest(){
+        $area = $this->app['area'];
+        $cache = $this->app['cache']->store('file');
+        $area->all();
+        $this->assertTrue($cache->has('AREA:ALL:TREE:1'));
+        $area->all(false);
+        $this->assertTrue($cache->has('AREA:ALL:1'));
     }
 
     public function getArea(){

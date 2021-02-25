@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 16:35:06
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-23 17:25:14
+ * @Last Modified time: 2021-02-25 11:30:54
  */
 namespace Yjtec\Area\Commands;
 use Illuminate\Console\Command;
@@ -16,22 +16,36 @@ class Seeder extends Command{
 
     public function handle()
     {
-        $data =json_decode(file_get_contents(__DIR__.'/../../database/area.json'),true);
-        $data = collect($data)->map(function($item){
-            return [
-                'id' => $item['area_id'],
-                'name' => $item['area_name'],
-                'pid' => $item['area_parent_id']
+        if(!AreaModel::where('name','中国')->first()){
+
+            $data =json_decode(file_get_contents(__DIR__.'/../../database/area.json'),true);
+            $data = collect($data)->map(function($item){
+                return [
+                    'id' => $item['area_id'],
+                    'name' => $item['area_name'],
+                    'pid' => $item['area_parent_id']
+                ];
+            })->toArray();
+            
+            $data = self::unlimitedForlayer($data,'children');
+            
+            $root = [
+                'name' => '中国',
+                'children' => $data
             ];
-        })->toArray();
-        
-        $data = self::unlimitedForlayer($data,'children');
-        
-        $root = [
-            'name' => '中国',
-            'children' => $data
-        ];
-        AreaModel::create($root);
+
+            $re = AreaModel::create($root);
+
+
+            $area = $this->laravel['area'];
+
+            $area->setCache($this->laravel['cache']->store('file'));
+            $area->all();
+            $area->all(false);
+        }
+
+
+
     }
 
     public static function unlimitedForlayer($cate, $name = 'child', $pid = 0, $level = 1)
