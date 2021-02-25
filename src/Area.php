@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:22:41
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-25 11:26:37
+ * @Last Modified time: 2021-02-25 13:59:51
  */
 namespace Yjtec\Area;
 use Yjtec\Area\Models\Area as AreaModel;
@@ -151,4 +151,29 @@ class Area{
         
         return $this->checkedData[$key];
     }
+
+    public function random($parent = null){
+        $all = $this->all(true,$parent);
+
+        $re = [];
+
+        $travel = function($data) use(&$travel,&$re){
+            $tmp = $data[mt_rand(0,count($data)-1)];
+            if(isset($tmp['children']) && $tmp['children']){
+                $travel($tmp['children'],$re);
+                unset($tmp['children']);
+                $re[] = $tmp;
+            }else{
+                $re[] = $tmp;
+            }
+        };
+        $travel($all);
+        $re = array_reverse($re);
+        $key = collect($re)->pluck('id')->implode(',');
+        return [
+            $key => $re
+        ];
+    }
+
+
 }

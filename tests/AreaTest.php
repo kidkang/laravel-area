@@ -4,7 +4,7 @@
  * @Author: kidkang
  * @Date:   2021-02-23 18:23:32
  * @Last Modified by:   kidkang
- * @Last Modified time: 2021-02-25 11:29:25
+ * @Last Modified time: 2021-02-25 14:00:21
  */
 namespace Yjtec\Area\Test;
 use Yjtec\Area\Area;
@@ -26,7 +26,8 @@ class AreaTest extends TestCase{
                     'children' =>[
                         ['name' => '郑州',
                             'children' => [
-                                ['name' => '二七区']
+                                ['name' => '二七区'],
+                                ['name' => '惠济区']
                             ]
                         ]
                     ]
@@ -36,7 +37,8 @@ class AreaTest extends TestCase{
                     'children' =>[
                         ['name' => '沈阳',
                                 'children' => [
-                                ['name' => '和平区']
+                                ['name' => '和平区'],
+                                ['name' => '铁西区']
                             ]
                         ]
                     ]
@@ -59,7 +61,7 @@ class AreaTest extends TestCase{
     public function testAllFlat(){
         $area = $this->getArea();
         $data = $area->all(false);
-        $this->assertCount(6,$data);
+        $this->assertCount(8,$data);
     }
 
     public function testCheckWithString(){
@@ -84,6 +86,7 @@ class AreaTest extends TestCase{
         $this->assertNotFalse($area->check(['2']));
         $this->assertArrayHasKey('2',$area->checked());
     }
+
     public function testChecked(){
         $area = $this->getArea();
         $area->check(2);
@@ -120,6 +123,12 @@ class AreaTest extends TestCase{
         $this->assertTrue($cache->has('AREA:ALL:TREE:1'));
         $area->all(false);
         $this->assertTrue($cache->has('AREA:ALL:1'));
+    }
+
+    public function testRandom(){
+        $area = $this->getArea();
+        $re = $area->random();
+        $this->assertNotNull($re);
     }
 
     public function getArea(){
